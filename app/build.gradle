@@ -29,4 +29,5 @@ dependencies {
 
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
+    implementation 'com.android.support:design:26.1.0'
 }

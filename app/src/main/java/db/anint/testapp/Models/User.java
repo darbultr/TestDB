@@ -1,5 +1,7 @@
 package db.anint.testapp.Models;
 
+import java.util.ArrayList;
+
 /**
  * Simple user class for login.
  */
@@ -17,15 +19,11 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 }
+
+
