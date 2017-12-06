@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="db.anint.testapp.LoginActivity">
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="40dp"
+        android:textColor="@color/primary_text"
+        android:text="@string/tvWelcome" />
+
+    <EditText
+        android:id="@+id/txtInputUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvWelcome"
+        android:layout_margin="16dp"
+        android:ems="10"
+        android:textColorHint="@color/secondary_text"
+        android:hint="@string/username"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/txtInputPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtInputUsername"
+        android:layout_margin="16dp"
+        android:ems="10"
+        android:textColorHint="@color/secondary_text"
+        android:hint="@string/password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtInputPassword"
+        android:layout_centerHorizontal="true"
+        android:background="@color/accent"
+        android:textColor="@color/primary_text"
+        android:layout_margin="16dp"
+        android:text="@string/login" />
+
+</RelativeLayout>
