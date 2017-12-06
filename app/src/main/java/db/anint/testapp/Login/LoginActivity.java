@@ -1,5 +1,6 @@
-package db.anint.testapp;
+package db.anint.testapp.Login;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import db.anint.testapp.Departments.DepartmentsList_;
 import db.anint.testapp.Models.User;
+import db.anint.testapp.R;
 import db.anint.testapp.Temp.TempUsers;
 import db.anint.testapp.Utils.Validators;
 
@@ -45,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     @AfterViews
     void init() {
         users.initTempUsers(); //Init temporary users
+        getSupportActionBar().setTitle(getTitle() + " - Please log in.");
     }
 
     @AfterTextChange(R.id.txtInputUsername)
@@ -76,8 +80,9 @@ public class LoginActivity extends AppCompatActivity {
         if (!usernameErrors && !passwordErrors) {
             User user = new User(txtInputUsername.getText().toString(), txtInputPassword.getText().toString());
             if (users.accessGranted(user)) {
-                Toast.makeText(this, "Access granted.", Toast.LENGTH_SHORT).show();
-                //TODO:Start new activity.
+                //TODO: send extra user object
+                Intent i = new Intent(this, DepartmentsList_.class);
+                startActivity(i);
             } else {
                 Toast.makeText(this, getResources().getString(R.string.accessDenied), Toast.LENGTH_SHORT).show();
             }
