@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Department class to download into listview
@@ -16,15 +17,17 @@ import java.io.Serializable;
 public class Department implements Serializable{
     @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonProperty("symbol")
-    String symbol;
+    private String symbol;
     @JsonProperty("opis")
-    String opis;
+    private String opis;
 
     public Department(String symbol, String opis) {
         this.symbol = symbol;
         this.opis = opis;
     }
 
+
+    //TODO: Remove not used methods
     public String getSymbol() {
         return symbol;
     }

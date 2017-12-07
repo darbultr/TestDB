@@ -1,5 +1,6 @@
 package db.anint.testapp.Login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -13,7 +14,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import db.anint.testapp.Departments.DepartmentsList_;
+import db.anint.testapp.Departments.DepartmentsListActivity_;
 import db.anint.testapp.Models.User;
 import db.anint.testapp.R;
 import db.anint.testapp.Temp.TempUsers;
@@ -23,9 +24,9 @@ import db.anint.testapp.Utils.Validators;
  * Activity used to validate user credentials inputs and give further access.
  */
 
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends AppCompatActivity {
-    public static final String TAG = LoginActivity.class.getName();
     private boolean usernameErrors, passwordErrors = true;
 
     TempUsers users = new TempUsers(); //Init temporary users
@@ -48,7 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     @AfterViews
     void init() {
         users.initTempUsers(); //Init temporary users
-        getSupportActionBar().setTitle(getTitle() + " - Please log in.");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getTitle() + " - Please log in.");
+        }
     }
 
     @AfterTextChange(R.id.txtInputUsername)
@@ -81,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             User user = new User(txtInputUsername.getText().toString(), txtInputPassword.getText().toString());
             if (users.accessGranted(user)) {
                 //TODO: send extra user object
-                Intent i = new Intent(this, DepartmentsList_.class);
+                Intent i = new Intent(this, DepartmentsListActivity_.class);
                 startActivity(i);
             } else {
                 Toast.makeText(this, getResources().getString(R.string.accessDenied), Toast.LENGTH_SHORT).show();

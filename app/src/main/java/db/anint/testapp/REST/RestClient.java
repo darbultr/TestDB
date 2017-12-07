@@ -8,34 +8,36 @@ import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import java.util.List;
-
+import java.util.ArrayList;
 
 import db.anint.testapp.Models.Department;
-import db.anint.testapp.Points.GetPoints;
-import db.anint.testapp.Routes.GetRoutes;
+import db.anint.testapp.Models.Point;
+import db.anint.testapp.Models.Route;
 import db.anint.testapp.Utils.Constants;
 
 /**
  * Implementation of REST Client
  */
+
+
 @Rest(rootUrl = Constants.API_URL, converters =
         {MappingJackson2HttpMessageConverter.class,
                 FormHttpMessageConverter.class,
                 StringHttpMessageConverter.class})
 public interface RestClient {
 
+
     @Get("oddzialy")
     @RequiresAuthentication
-    List<Department> getDepartment();
+    ArrayList<Department> getDepartment();
 
     @Get("trasy&oddzial={id}")
     @RequiresAuthentication
-    GetRoutes getRoutes(@Path String id);
+    ArrayList<Route> getRoutes(@Path String id);
 
     @Get("miejsca&trasa={id}")
     @RequiresAuthentication
-    GetPoints getPoints(@Path String id);
+    ArrayList<Point> getPoints(@Path String id);
 
     void setHttpBasicAuth(String username, String password);
 }

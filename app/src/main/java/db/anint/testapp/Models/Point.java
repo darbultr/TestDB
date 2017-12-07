@@ -31,6 +31,53 @@ public class Point {
     @JsonProperty("trasa")
     private String trasa;
 
+    public Point(double lat, double lon, String adres, String klasa, String trasa) {
+        this.lat = lat;
+        this.lon = lon;
+        this.adres = adres;
+        this.klasa = klasa;
+        this.trasa = trasa;
+    }
 
+    //TODO: Remove not used methods
 
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public String getAdres() {
+        return adres;
+    }
+
+    public void setAdres(String adres) {
+        this.adres = adres;
+    }
+
+    public String getKlasa() {
+        return klasa;
+    }
+
+    public void setKlasa(String klasa) {
+        this.klasa = klasa;
+    }
+
+    public String getTrasa() {
+        return trasa;
+    }
+
+    public void setTrasa(String trasa) {
+        this.trasa = trasa;
+    }
 }

@@ -1,7 +1,7 @@
 package db.anint.testapp.Routes;
 
 /**
- * Created by darek on 06.12.17.
+ * Function to get routes list from api
  */
 
 public class GetRoutes {

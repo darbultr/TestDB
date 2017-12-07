@@ -1,7 +1,7 @@
 package db.anint.testapp.Points;
 
 /**
- * Created by darek on 06.12.17.
+ * Function to get points list from api
  */
 
 public class GetPoints {
