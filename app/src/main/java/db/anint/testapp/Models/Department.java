@@ -1,12 +1,23 @@
 package db.anint.testapp.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
+
 /**
- * Created by darek on 06.12.17.
+ * Department class to download into listview
+ {
+ "symbol": "CA",
+ "opis": "CZĘSTOCHOWA (oddziałowy)"
+ }
  */
 
-public class Department {
-
+public class Department implements Serializable{
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("symbol")
     String symbol;
+    @JsonProperty("opis")
     String opis;
 
     public Department(String symbol, String opis) {

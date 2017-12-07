@@ -1,6 +1,5 @@
 package db.anint.testapp.Models;
 
-import java.util.ArrayList;
 
 /**
  * Simple user class for login.

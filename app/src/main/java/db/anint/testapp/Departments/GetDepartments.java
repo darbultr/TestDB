@@ -3,6 +3,7 @@ package db.anint.testapp.Departments;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.List;
@@ -28,8 +29,15 @@ public class GetDepartments {
         try {
             restClient.setHttpBasicAuth("dariuszb", "398kl*ALc5ffn9v");
             List<Department> departments = restClient.getDepartment();
+            publish(departments);
         } catch (Exception ex) {
-
+            publishE(ex);
         }
     }
+
+    @UiThread
+    void publish(List<Department> departments){departmentsList.showDepartments(departments);}
+
+    @UiThread
+    void publishE(Exception ex){departmentsList.showErrors(ex);}
 }
