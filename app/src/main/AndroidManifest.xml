@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Departments.DepartmentsListActivity_"></activity>
+        <activity android:name=".Departments.DepartmentsListActivity_" />
+        <activity android:name=".Routes.RoutesListActivity_" />
+        <activity android:name=".Points.PointsListActivity_"></activity>
     </application>
 
 </manifest>

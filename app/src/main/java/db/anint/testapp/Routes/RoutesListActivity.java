@@ -1,4 +1,4 @@
-package db.anint.testapp.Departments;
+package db.anint.testapp.Routes;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -19,14 +19,15 @@ import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-
+import db.anint.testapp.Departments.DepartmentsListActivity;
 import db.anint.testapp.Models.Department;
+import db.anint.testapp.Models.Route;
+import db.anint.testapp.Points.PointsListActivity_;
 import db.anint.testapp.R;
-import db.anint.testapp.Routes.RoutesListActivity_;
 
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_departments_list)
-public class DepartmentsListActivity extends AppCompatActivity {
+@EActivity(R.layout.activity_routes_list)
+public class RoutesListActivity extends AppCompatActivity {
 
     @Extra("username")
     String username;
@@ -34,75 +35,76 @@ public class DepartmentsListActivity extends AppCompatActivity {
     @Extra("password")
     String password;
 
-    @ViewById
-    ListView listDepartments;
+    @Extra("route")
+    String route;
 
     @ViewById
-    ConstraintLayout departmentsLayout;
+    ListView listRoutes;
+
+    @ViewById
+    ConstraintLayout routesLayout;
 
     @Bean
     @NonConfigurationInstance
-    GetDepartments getDepartments;
+    GetRoutes getRoutes;
     ProgressDialog progressDialog;
 
     @Bean
-    DepartmentsAdapter departmentsAdapter;
+    RoutesAdapter routesAdapter;
 
     @AfterViews
     void init() {
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(getTitle() + " - Departments list");
+            getSupportActionBar().setTitle(getTitle() + " - Routes list");
         }
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getResources().getString(R.string.downloadingDepartmentsList));
+        progressDialog.setMessage(getResources().getString(R.string.downloadingRoutesList));
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
         tempPopulate();
-        //TODO: Uncomment later send extras
-      // getDepartments();
+        //TODO: Uncomment later;
+      //  getRoutes();
     }
 
-    public void getDepartments() {
-        getDepartments.getDepartments(username, password);
+    public void getRoutes() {
+        getRoutes.getRoutes(username, password, route);
     }
 
-
-    public void showDepartments(ArrayList<Department> departments) {
+    public void showRoutes(ArrayList<Route> routes) {
         progressDialog.dismiss();
-        departmentsAdapter.update(departments);
-        listDepartments.setAdapter(departmentsAdapter);
+        routesAdapter.update(routes);
+        listRoutes.setAdapter(routesAdapter);
     }
 
     @ItemClick
-    void listDepartmentsItemClicked(Department department) {
-        Intent i = new Intent(this, RoutesListActivity_.class);
+    void listRoutesItemClicked(Route route) {
+        Intent i = new Intent(this, PointsListActivity_.class);
         i.putExtra("username", username);
         i.putExtra("password", password);
-        i.putExtra("route", department.getSymbol());
+        i.putExtra("guid", route.getGuid());
+        i.putExtra("symbol", route.getSymbol());
         startActivity(i);
     }
 
     public void showErrors(Exception ex) {
         progressDialog.dismiss();
-        Log.e(DepartmentsListActivity.class.getName(), ex.getMessage());
-        Snackbar errorBar = Snackbar.make(departmentsLayout, getResources().getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
+        Log.e(RoutesListActivity.class.getName(), ex.getMessage());
+        Snackbar errorBar = Snackbar.make(routesLayout, getResources().getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
                 .setAction(getResources().getString(R.string.retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         progressDialog.show();
 
-                        getDepartments();
+                        getRoutes();
                     }
                 });
+
         errorBar.show();
     }
-
-
-    //Temp method to populate listview
     public void tempPopulate() {
-        listDepartments.setAdapter(departmentsAdapter);
+        listRoutes.setAdapter(routesAdapter);
         progressDialog.dismiss();
     }
 }

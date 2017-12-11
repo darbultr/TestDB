@@ -31,12 +31,15 @@ public class Point {
     @JsonProperty("trasa")
     private String trasa;
 
-    public Point(double lat, double lon, String adres, String klasa, String trasa) {
+    private boolean done = false;
+
+    public Point(double lat, double lon, String adres, String klasa, String trasa, boolean done) {
         this.lat = lat;
         this.lon = lon;
         this.adres = adres;
         this.klasa = klasa;
         this.trasa = trasa;
+        this.done = done;
     }
 
     //TODO: Remove not used methods
@@ -79,5 +82,13 @@ public class Point {
 
     public void setTrasa(String trasa) {
         this.trasa = trasa;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

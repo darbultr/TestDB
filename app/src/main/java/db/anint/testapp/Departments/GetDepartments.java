@@ -12,7 +12,7 @@ import db.anint.testapp.Models.Department;
 import db.anint.testapp.REST.RestClient;
 
 /**
- * Function to get departments list from api
+ * Function to get routes list from api
  */
 
 @EBean

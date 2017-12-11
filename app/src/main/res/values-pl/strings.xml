@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TestDB</string>
+    <string name="tvWelcome">Witaj, proszę się zalogować</string>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="password">Hasło</string>
+    <string name="login">Zaloguj</string>
+    <string name="userEmpty">Nazwa użytkownika musi się składać przynajmniej z 3 znaków.</string>
+    <string name="passwordEmpty">Hasło musi się składać przynajmniej z 3 znaków.</string>
+    <string name="enterCredentials">Proszę podać poprawne dane logowania.</string>
+    <string name="accessDenied">Odmowa dostępu</string>
+    <string name="downloadingDepartmentsList">Pobieranie listy oddziałów...</string>
+    <string name="downloadingRoutesList">Pobieranie listy tras...</string>
+    <string name="downloadingPointsList">Pobeiranie listy punktów...</string>
+    <string name="error">Błąd, proszę spróbować ponownie!</string>
+    <string name="retry">PONÓW PRÓBĘ</string>
+    <string name="navigate">Nawiguj do tego miejsca</string>
+    <string name="delete">Usuń punkt z listy</string>
+    <string name="makePhoto">Zrób zdjęcie lokalizacji</string>
+    <string name="done">Oznacz jako zrealizowany</string>
+    <string name="confirmDelete">Czy na pewno chcesz usunąć ten punkt z listy?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+</resources>

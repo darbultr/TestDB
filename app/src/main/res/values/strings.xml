@@ -9,6 +9,15 @@
     <string name="enterCredentials">Please enter correct credential.</string>
     <string name="accessDenied">Access denied.</string>
     <string name="downloadingDepartmentsList">Downloading departments list…</string>
+    <string name="downloadingRoutesList">Downloading routes list…</string>
+    <string name="downloadingPointsList">Downloading points list…</string>
     <string name="error">Error, please try again!</string>
     <string name="retry">RETRY</string>
+    <string name="navigate">Navigate</string>
+    <string name="delete">Delete</string>
+    <string name="makePhoto">Make photo</string>
+    <string name="done">Done</string>
+    <string name="confirmDelete">Are you sure to delete this point from list?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

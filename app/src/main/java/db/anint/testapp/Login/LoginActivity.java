@@ -2,6 +2,7 @@ package db.anint.testapp.Login;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -83,8 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         if (!usernameErrors && !passwordErrors) {
             User user = new User(txtInputUsername.getText().toString(), txtInputPassword.getText().toString());
             if (users.accessGranted(user)) {
-                //TODO: send extra user object
                 Intent i = new Intent(this, DepartmentsListActivity_.class);
+                i.putExtra("username", user.getUsername());
+                i.putExtra("password", user.getPassword());
                 startActivity(i);
             } else {
                 Toast.makeText(this, getResources().getString(R.string.accessDenied), Toast.LENGTH_SHORT).show();
