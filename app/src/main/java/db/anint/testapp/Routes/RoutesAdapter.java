@@ -12,14 +12,12 @@ import java.util.ArrayList;
 
 import db.anint.testapp.Models.Route;
 
-import db.anint.testapp.Temp.TempRoutes;
-
 /**
  * Adapter used to populate listview with data.
  */
 @EBean
 public class RoutesAdapter extends BaseAdapter{
-    private ArrayList<Route> routes = new TempRoutes();
+    private ArrayList<Route> routes = new ArrayList<>();
 
     @RootContext
     Context context;

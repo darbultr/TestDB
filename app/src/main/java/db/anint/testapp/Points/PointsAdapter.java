@@ -11,14 +11,13 @@ import org.androidannotations.annotations.RootContext;
 import java.util.ArrayList;
 
 import db.anint.testapp.Models.Point;
-import db.anint.testapp.Temp.TempPoints;
 
 /**
  * Adapter used to populate listview with data.
  */
 @EBean
 public class PointsAdapter extends BaseAdapter {
-    private ArrayList<Point> points = new TempPoints();
+    private ArrayList<Point> points = new ArrayList<>();
 
     @RootContext
     Context context;

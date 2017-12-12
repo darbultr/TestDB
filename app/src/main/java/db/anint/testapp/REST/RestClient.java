@@ -21,11 +21,8 @@ import db.anint.testapp.Utils.Constants;
 
 
 @Rest(rootUrl = Constants.API_URL, converters =
-        {MappingJackson2HttpMessageConverter.class,
-                FormHttpMessageConverter.class,
-                StringHttpMessageConverter.class})
+        {MappingJackson2HttpMessageConverter.class})
 public interface RestClient {
-
 
     @Get("oddzialy")
     @RequiresAuthentication

@@ -44,6 +44,9 @@ dependencies {
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 
+    compile 'com.google.code.gson:gson:2.8.2'
+
+
     annotationProcessor "org.androidannotations:rest-spring:$AAVersion"
     compile "org.androidannotations:rest-spring-api:$AAVersion"
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'

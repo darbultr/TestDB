@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
@@ -20,7 +21,9 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
+
 import db.anint.testapp.Models.Point;
 import db.anint.testapp.R;
 
@@ -67,9 +70,8 @@ public class PointsListActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
-        tempPopulate();
-        //TODO: Uncomment later;
-        //   getPoints();
+
+        getPoints();
     }
 
     public void getPoints() {
@@ -141,13 +143,8 @@ public class PointsListActivity extends AppCompatActivity {
         errorBar.show();
     }
 
-    public void tempPopulate() {
-        listPoints.setAdapter(pointsAdapter);
-        progressDialog.dismiss();
-    }
-
     //TODO: Method to save data from made operations to json, { point guid, operation, location(?where was made?), time, photo name
-    public void saveOperationData(){
+    public void saveOperationData() {
 
     }
 }

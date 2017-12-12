@@ -11,34 +11,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  }
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Route {
-    @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonProperty("guid")
     private String guid;
 
     @JsonProperty("symbol")
     private String symbol;
 
+    public Route(){
+        super();
+    }
+
     public Route(String guid, String symbol) {
         this.guid = guid;
         this.symbol = symbol;
     }
 
-    //TODO: Remove not used methods
-
     public String getGuid() {
         return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
     }
 
     public String getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
 }

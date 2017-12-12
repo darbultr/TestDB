@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  }
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Point {
-    @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonProperty("lat")
     private double lat;
 
@@ -33,6 +33,10 @@ public class Point {
 
     private boolean done = false;
 
+    public Point(){
+        super();
+    }
+
     public Point(double lat, double lon, String adres, String klasa, String trasa, boolean done) {
         this.lat = lat;
         this.lon = lon;
@@ -42,46 +46,20 @@ public class Point {
         this.done = done;
     }
 
-    //TODO: Remove not used methods
-
     public double getLat() {
         return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
     }
 
     public double getLon() {
         return lon;
     }
 
-    public void setLon(double lon) {
-        this.lon = lon;
-    }
-
     public String getAdres() {
         return adres;
     }
 
-    public void setAdres(String adres) {
-        this.adres = adres;
-    }
-
     public String getKlasa() {
         return klasa;
-    }
-
-    public void setKlasa(String klasa) {
-        this.klasa = klasa;
-    }
-
-    public String getTrasa() {
-        return trasa;
-    }
-
-    public void setTrasa(String trasa) {
-        this.trasa = trasa;
     }
 
     public boolean isDone() {

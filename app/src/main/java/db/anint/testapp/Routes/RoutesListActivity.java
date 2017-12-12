@@ -63,9 +63,8 @@ public class RoutesListActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
-        tempPopulate();
-        //TODO: Uncomment later;
-      //  getRoutes();
+
+        getRoutes();
     }
 
     public void getRoutes() {
@@ -103,8 +102,5 @@ public class RoutesListActivity extends AppCompatActivity {
 
         errorBar.show();
     }
-    public void tempPopulate() {
-        listRoutes.setAdapter(routesAdapter);
-        progressDialog.dismiss();
-    }
+
 }

@@ -5,13 +5,14 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import java.util.ArrayList;
 
 
 import db.anint.testapp.Models.Department;
-import db.anint.testapp.Temp.TempDepartments;
+
 
 /**
  * Adapter used to populate listview with data.
@@ -19,11 +20,11 @@ import db.anint.testapp.Temp.TempDepartments;
 @EBean
 public class DepartmentsAdapter extends BaseAdapter {
 
-   private ArrayList<Department> departments = new TempDepartments();
+    private ArrayList<Department> departments = new ArrayList<>();
     @RootContext
     Context context;
 
-    void update(ArrayList<Department> newDepartments){
+    void update(ArrayList<Department> newDepartments) {
         departments.clear();
         departments.addAll(newDepartments);
         notifyDataSetChanged();

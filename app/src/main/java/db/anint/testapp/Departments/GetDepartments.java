@@ -5,8 +5,9 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
-import java.util.ArrayList;
 
+
+import java.util.ArrayList;
 
 import db.anint.testapp.Models.Department;
 import db.anint.testapp.REST.RestClient;
@@ -17,6 +18,7 @@ import db.anint.testapp.REST.RestClient;
 
 @EBean
 public class GetDepartments {
+
     @RootContext
     DepartmentsListActivity departmentsListActivity;
 
@@ -28,18 +30,19 @@ public class GetDepartments {
         //TODO: Change after geting extra, so far u:dariuszb p:398kl*ALc5ffn9v
         try {
             restClient.setHttpBasicAuth("dariuszb", "398kl*ALc5ffn9v");
-            ArrayList<Department> departments = restClient.getDepartment();
-            publish(departments);
+            publish(restClient.getDepartment());
         } catch (Exception ex) {
             publishError(ex);
         }
     }
 
     @UiThread
-    void publish(ArrayList<Department> departments){
-        departmentsListActivity.showDepartments(departments);}
+    void publish(ArrayList<Department> departmentsArray) {
+        departmentsListActivity.showDepartments(departmentsArray);
+    }
 
     @UiThread
-    void publishError(Exception ex){
-        departmentsListActivity.showErrors(ex);}
+    void publishError(Exception ex) {
+        departmentsListActivity.showErrors(ex);
+    }
 }

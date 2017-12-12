@@ -59,9 +59,8 @@ public class DepartmentsListActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
-        tempPopulate();
-        //TODO: Uncomment later send extras
-      // getDepartments();
+
+       getDepartments();
     }
 
     public void getDepartments() {
@@ -99,10 +98,4 @@ public class DepartmentsListActivity extends AppCompatActivity {
         errorBar.show();
     }
 
-
-    //Temp method to populate listview
-    public void tempPopulate() {
-        listDepartments.setAdapter(departmentsAdapter);
-        progressDialog.dismiss();
-    }
 }

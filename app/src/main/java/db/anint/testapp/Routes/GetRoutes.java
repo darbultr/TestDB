@@ -28,8 +28,7 @@ public class GetRoutes {
         //TODO: Change after geting extra, so far u:dariuszb p:398kl*ALc5ffn9v
         try {
             restClient.setHttpBasicAuth("dariuszb", "398kl*ALc5ffn9v");
-            ArrayList<Route> routes = restClient.getRoutes(id);
-            publish(routes);
+            publish(restClient.getRoutes(id));
         } catch (Exception ex) {
             publishError(ex);
         }

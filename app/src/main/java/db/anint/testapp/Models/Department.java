@@ -3,31 +3,36 @@ package db.anint.testapp.Models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Department class to download into listview
- {
- "symbol": "CA",
- "opis": "CZĘSTOCHOWA (oddziałowy)"
- }
+ * {
+ * "symbol": "CA",
+ * "opis": "CZĘSTOCHOWA (oddziałowy)"
+ * }
  */
 
-public class Department implements Serializable{
-    @JsonIgnoreProperties(ignoreUnknown = true)
+public class Department implements Serializable {
     @JsonProperty("symbol")
     private String symbol;
     @JsonProperty("opis")
     private String opis;
+
+    public Department(){
+        super();
+    }
 
     public Department(String symbol, String opis) {
         this.symbol = symbol;
         this.opis = opis;
     }
 
-
-    //TODO: Remove not used methods
     public String getSymbol() {
         return symbol;
     }
@@ -36,11 +41,4 @@ public class Department implements Serializable{
         return opis;
     }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public void setOpis(String opis) {
-        this.opis = opis;
-    }
 }
