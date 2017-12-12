@@ -6,7 +6,7 @@
     <string name="password">Hasło</string>
     <string name="login">Zaloguj</string>
     <string name="userEmpty">Nazwa użytkownika musi się składać przynajmniej z 3 znaków.</string>
-    <string name="passwordEmpty">Hasło musi się składać przynajmniej z 3 znaków.</string>
+    <string name="passwordEmpty">Hasło musi się składać przynajmniej z 8 znaków.</string>
     <string name="enterCredentials">Proszę podać poprawne dane logowania.</string>
     <string name="accessDenied">Odmowa dostępu</string>
     <string name="downloadingDepartmentsList">Pobieranie listy oddziałów...</string>

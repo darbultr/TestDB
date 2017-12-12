@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import junit.framework.Assert;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import db.anint.testapp.Models.Department;
 import db.anint.testapp.R;
 import db.anint.testapp.Routes.RoutesListActivity_;
+import db.anint.testapp.Utils.VoiceRecognizer;
 
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_departments_list)
@@ -53,6 +57,7 @@ public class DepartmentsListActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getTitle() + " - Departments list");
         }
+        final VoiceRecognizer vr = new VoiceRecognizer();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getResources().getString(R.string.downloadingDepartmentsList));
@@ -60,7 +65,23 @@ public class DepartmentsListActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-       getDepartments();
+        getDepartments();
+
+        ArrayList<String> matches = new ArrayList<>();
+        matches.add("dalej");
+        matches.add("Dalej");
+        matches.add("dale");
+        matches.add("Dale");
+
+        try {
+            ArrayList<String> commands = vr.getCommand(this);
+            if (commands!=null){
+                Toast.makeText(this, commands.get(0), Toast.LENGTH_SHORT).show();
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void getDepartments() {
@@ -72,6 +93,7 @@ public class DepartmentsListActivity extends AppCompatActivity {
         progressDialog.dismiss();
         departmentsAdapter.update(departments);
         listDepartments.setAdapter(departmentsAdapter);
+
     }
 
     @ItemClick

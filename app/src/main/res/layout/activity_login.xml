@@ -26,7 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:ems="10"
+            android:focusedByDefault="true"
             android:hint="@string/username"
+
             android:inputType="textPersonName"
             android:textColorHint="@color/secondary_text" />
     </android.support.design.widget.TextInputLayout>
