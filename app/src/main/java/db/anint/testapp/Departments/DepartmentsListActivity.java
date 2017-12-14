@@ -33,7 +33,7 @@ import db.anint.testapp.Utils.VoiceRecognizer;
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_departments_list)
 public class DepartmentsListActivity extends AppCompatActivity implements RecognitionListener {
-    final String TAG = this.getPackageName();
+    final String TAG = DepartmentsListActivity.class.getSimpleName();
     VoiceRecognizer vr = new VoiceRecognizer();
 
     @Extra("username")
