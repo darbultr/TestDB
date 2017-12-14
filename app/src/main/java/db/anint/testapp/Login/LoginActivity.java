@@ -2,7 +2,6 @@ package db.anint.testapp.Login;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;

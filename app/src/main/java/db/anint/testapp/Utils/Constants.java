@@ -1,6 +1,5 @@
 package db.anint.testapp.Utils;
 
-
 /**
  * Constants for TestApp
  */

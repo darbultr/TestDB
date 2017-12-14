@@ -3,6 +3,9 @@ package db.anint.testapp.Departments;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import junit.framework.Assert;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -28,9 +29,12 @@ import db.anint.testapp.R;
 import db.anint.testapp.Routes.RoutesListActivity_;
 import db.anint.testapp.Utils.VoiceRecognizer;
 
+
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_departments_list)
-public class DepartmentsListActivity extends AppCompatActivity {
+public class DepartmentsListActivity extends AppCompatActivity implements RecognitionListener {
+    final String TAG = this.getPackageName();
+    VoiceRecognizer vr = new VoiceRecognizer();
 
     @Extra("username")
     String username;
@@ -57,7 +61,6 @@ public class DepartmentsListActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getTitle() + " - Departments list");
         }
-        final VoiceRecognizer vr = new VoiceRecognizer();
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getResources().getString(R.string.downloadingDepartmentsList));
@@ -67,21 +70,8 @@ public class DepartmentsListActivity extends AppCompatActivity {
 
         getDepartments();
 
-        ArrayList<String> matches = new ArrayList<>();
-        matches.add("dalej");
-        matches.add("Dalej");
-        matches.add("dale");
-        matches.add("Dale");
+        vr.initListener(this, this);
 
-        try {
-            ArrayList<String> commands = vr.getCommand(this);
-            if (commands!=null){
-                Toast.makeText(this, commands.get(0), Toast.LENGTH_SHORT).show();
-            }
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
     }
 
     public void getDepartments() {
@@ -93,8 +83,8 @@ public class DepartmentsListActivity extends AppCompatActivity {
         progressDialog.dismiss();
         departmentsAdapter.update(departments);
         listDepartments.setAdapter(departmentsAdapter);
-
     }
+
 
     @ItemClick
     void listDepartmentsItemClicked(Department department) {
@@ -120,4 +110,72 @@ public class DepartmentsListActivity extends AppCompatActivity {
         errorBar.show();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (vr.getListener() != null) {
+            vr.getListener().destroy();
+            Log.i(TAG, "Listener destroyed");
+        }
+    }
+
+    /*
+        RecognitionListener methods
+     */
+
+    @Override
+    public void onReadyForSpeech(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onBeginningOfSpeech() {
+
+    }
+
+    @Override
+    public void onRmsChanged(float v) {
+
+    }
+
+    @Override
+    public void onBufferReceived(byte[] bytes) {
+
+    }
+
+    @Override
+    public void onEndOfSpeech() {
+        vr.startListener();
+    }
+
+    @Override
+    public void onError(int i) {
+        vr.startListener();
+    }
+
+    @Override
+    public void onResults(Bundle bundle) {
+        ArrayList<String> matches = bundle
+                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        //TODO: Check matches with commands array. if exists do specific action.
+        if (matches != null) {
+            Toast.makeText(this, matches.get(0), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onPartialResults(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onEvent(int i, Bundle bundle) {
+
+    }
 }
