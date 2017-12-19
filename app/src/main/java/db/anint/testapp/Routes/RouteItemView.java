@@ -15,8 +15,12 @@ import db.anint.testapp.R;
  */
 @EViewGroup(R.layout.routes_list_item)
 public class RouteItemView extends ConstraintLayout {
+
     @ViewById
     TextView tvRouteName;
+
+    @ViewById
+    ConstraintLayout routesLayout;
 
     public RouteItemView(Context context) {
         super(context);
@@ -24,5 +28,10 @@ public class RouteItemView extends ConstraintLayout {
 
     public void bind(Route route) {
         tvRouteName.setText(route.getSymbol());
+        if (route.isFocus()) {
+            routesLayout.setBackgroundResource(R.color.primary_light);
+        } else {
+            routesLayout.setBackgroundResource(android.R.color.transparent);
+        }
     }
 }

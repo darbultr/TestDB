@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -24,6 +23,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
+import db.anint.testapp.Login.LoginActivity_;
 import db.anint.testapp.Models.Department;
 import db.anint.testapp.R;
 import db.anint.testapp.Routes.RoutesListActivity_;
@@ -35,6 +35,8 @@ import db.anint.testapp.Utils.VoiceRecognizer;
 public class DepartmentsListActivity extends AppCompatActivity implements RecognitionListener {
     final String TAG = DepartmentsListActivity.class.getSimpleName();
     VoiceRecognizer vr = new VoiceRecognizer();
+    Snackbar confirm;
+    int possition = 0;
 
     @Extra("username")
     String username;
@@ -61,41 +63,38 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getTitle() + " - Departments list");
         }
+        initUtils();
+        getDepartments();
 
+    }
+
+    public void initUtils() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getResources().getString(R.string.downloadingDepartmentsList));
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        getDepartments();
+        confirm = Snackbar
+                .make(departmentsLayout, getResources().getString(R.string.exitApp), Snackbar.LENGTH_INDEFINITE);
 
         vr.initListener(this, this);
-
     }
 
     public void getDepartments() {
         getDepartments.getDepartments(username, password);
     }
 
-
     public void showDepartments(ArrayList<Department> departments) {
         progressDialog.dismiss();
         departmentsAdapter.update(departments);
         listDepartments.setAdapter(departmentsAdapter);
-    }
-
-
-    @ItemClick
-    void listDepartmentsItemClicked(Department department) {
-        Intent i = new Intent(this, RoutesListActivity_.class);
-        i.putExtra("username", username);
-        i.putExtra("password", password);
-        i.putExtra("route", department.getSymbol());
-        startActivity(i);
+        setFocus();
+        vr.startListener();
     }
 
     public void showErrors(Exception ex) {
+        vr.getListener().stopListening();
         progressDialog.dismiss();
         Log.e(DepartmentsListActivity.class.getName(), ex.getMessage());
         Snackbar errorBar = Snackbar.make(departmentsLayout, getResources().getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
@@ -110,10 +109,32 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
         errorBar.show();
     }
 
+    public void setFocus() {
+        departmentsAdapter.getItem(possition).setFocus(true);
+        departmentsAdapter.notifyDataSetChanged();
+    }
+
+    public void clearFocus() {
+        departmentsAdapter.getItem(possition).setFocus(false);
+        departmentsAdapter.notifyDataSetChanged();
+    }
+
+    @ItemClick
+    void listDepartmentsItemClicked(Department department) {
+        clearFocus();
+        Intent i = new Intent(this, RoutesListActivity_.class);
+        i.putExtra("username", username);
+        i.putExtra("password", password);
+        i.putExtra("route", department.getSymbol());
+        startActivity(i);
+    }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (vr != null) {
+            vr.startListener();
+        }
     }
 
     @Override
@@ -161,21 +182,45 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
 
     @Override
     public void onResults(Bundle bundle) {
-        ArrayList<String> matches = bundle
-                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        //TODO: Check matches with commands array. if exists do specific action.
+        ArrayList<String> matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
         if (matches != null) {
-            Toast.makeText(this, matches.get(0), Toast.LENGTH_SHORT).show();
+            String command = vr.
+                    executeCommands(
+                            matches,
+                            listDepartments,
+                            possition,
+                            this,
+                            departmentsAdapter,
+                            confirm,
+                            false);
+
+            switch (command) {
+                case "down":
+                    clearFocus();
+                    possition++;
+                    setFocus();
+                    break;
+                case "up":
+                    clearFocus();
+                    possition--;
+                    setFocus();
+                    break;
+                case "yes":
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity_.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("EXIT", true);
+                    startActivity(intent);
+                    break;
+            }
         }
     }
 
     @Override
     public void onPartialResults(Bundle bundle) {
-
     }
 
     @Override
     public void onEvent(int i, Bundle bundle) {
-
     }
 }

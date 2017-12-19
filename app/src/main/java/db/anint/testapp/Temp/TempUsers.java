@@ -18,6 +18,7 @@ public class TempUsers {
     }
 
     public void initTempUsers() {
+        users.put("aaa", "aaaaaaaa");
         users.put("Jan", "Kowalski");
         users.put("Piotr", "Fronczewski");
         users.put("Robert", "Lewandowski");

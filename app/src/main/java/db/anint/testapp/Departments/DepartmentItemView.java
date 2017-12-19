@@ -19,11 +19,19 @@ public class DepartmentItemView extends ConstraintLayout {
     @ViewById
     TextView tvDepartmentName;
 
+    @ViewById
+    ConstraintLayout departmentsLayout;
+
     public DepartmentItemView(Context context) {
         super(context);
     }
 
-    public void bind(Department department){
+    public void bind(Department department) {
         tvDepartmentName.setText(department.getOpis());
+        if (department.isFocus()) {
+            departmentsLayout.setBackgroundResource(R.color.primary_light);
+        } else {
+            departmentsLayout.setBackgroundResource(android.R.color.transparent);
+        }
     }
 }

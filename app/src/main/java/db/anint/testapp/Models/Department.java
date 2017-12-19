@@ -24,7 +24,9 @@ public class Department implements Serializable {
     @JsonProperty("opis")
     private String opis;
 
-    public Department(){
+    private boolean focus;
+
+    public Department() {
         super();
     }
 
@@ -41,4 +43,11 @@ public class Department implements Serializable {
         return opis;
     }
 
+    public boolean isFocus() {
+        return focus;
+    }
+
+    public void setFocus(boolean focus) {
+        this.focus = focus;
+    }
 }

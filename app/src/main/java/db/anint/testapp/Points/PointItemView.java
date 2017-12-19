@@ -1,6 +1,7 @@
 package db.anint.testapp.Points;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ public class PointItemView extends RelativeLayout{
     TextView tvPointAddress;
     @ViewById
     TextView tvPointClass;
+    @ViewById
+    RelativeLayout pointsLayout;
 
     public PointItemView(Context context) {
         super(context);
@@ -29,6 +32,11 @@ public class PointItemView extends RelativeLayout{
         tvPointClass.setText(point.getKlasa());
         if(point.isDone()){
            tvPointAddress.setTextColor(getResources().getColor(R.color.primary_dark));
+        }
+        if (point.isFocus()) {
+            pointsLayout.setBackgroundResource(R.color.primary_light);
+        } else {
+            pointsLayout.setBackgroundResource(android.R.color.transparent);
         }
     }
 

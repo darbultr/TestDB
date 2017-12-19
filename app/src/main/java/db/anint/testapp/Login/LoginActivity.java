@@ -48,6 +48,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @AfterViews
     void init() {
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
         users.initTempUsers(); //Init temporary users
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(getTitle() + " - Please log in.");

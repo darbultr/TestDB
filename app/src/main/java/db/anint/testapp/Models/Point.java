@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Point class to download into listview
- {
- "lat": "53.911135",
- "lon": "18.217692",
- "adres": "ul.Osiedlowa 5, 83-260 Frank, poczta Kaliska (Kaliska, POMORSKIE)",
- "klasa": "WŁASNE_ZUŻYCIE",
- "trasa": "SO-3"
- }
+ * {
+ * "lat": "53.911135",
+ * "lon": "18.217692",
+ * "adres": "ul.Osiedlowa 5, 83-260 Frank, poczta Kaliska (Kaliska, POMORSKIE)",
+ * "klasa": "WŁASNE_ZUŻYCIE",
+ * "trasa": "SO-3"
+ * }
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,7 +33,9 @@ public class Point {
 
     private boolean done = false;
 
-    public Point(){
+    private boolean focus;
+
+    public Point() {
         super();
     }
 
@@ -45,6 +47,7 @@ public class Point {
         this.trasa = trasa;
         this.done = done;
     }
+
 
     public double getLat() {
         return lat;
@@ -68,5 +71,13 @@ public class Point {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public boolean isFocus() {
+        return focus;
+    }
+
+    public void setFocus(boolean focus) {
+        this.focus = focus;
     }
 }

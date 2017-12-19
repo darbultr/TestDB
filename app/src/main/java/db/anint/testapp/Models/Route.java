@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Route class to download into listview
- {
- "guid": "676e61664b8baed66547fa8d56ac463e",
- "symbol": "GDANSK PORT"
- }
+ * {
+ * "guid": "676e61664b8baed66547fa8d56ac463e",
+ * "symbol": "GDANSK PORT"
+ * }
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -19,7 +19,9 @@ public class Route {
     @JsonProperty("symbol")
     private String symbol;
 
-    public Route(){
+    private boolean focus;
+
+    public Route() {
         super();
     }
 
@@ -36,4 +38,11 @@ public class Route {
         return symbol;
     }
 
+    public boolean isFocus() {
+        return focus;
+    }
+
+    public void setFocus(boolean focus) {
+        this.focus = focus;
+    }
 }
