@@ -18,6 +18,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 
@@ -91,7 +92,9 @@ public class RoutesListActivity extends AppCompatActivity implements Recognition
         progressDialog.dismiss();
         routesAdapter.update(routes);
         listRoutes.setAdapter(routesAdapter);
-        setFocus();
+        if (routes.size() > 0) {
+            setFocus();
+        }
         vr.startListener();
     }
 
@@ -123,20 +126,30 @@ public class RoutesListActivity extends AppCompatActivity implements Recognition
     }
 
     @ItemClick
-    void listRoutesItemClicked(Route route) {
+    void listRoutesItemClicked(final int pos) {
         clearFocus();
+        possition = pos;
         Intent i = new Intent(this, PointsListActivity_.class);
         i.putExtra("username", username);
         i.putExtra("password", password);
-        i.putExtra("guid", route.getGuid());
-        i.putExtra("symbol", route.getSymbol());
+        i.putExtra("guid", routesAdapter.getItem(pos).getGuid());
+        i.putExtra("symbol", routesAdapter.getItem(pos).getSymbol());
         startActivity(i);
+    }
+
+    @ItemLongClick
+    void listRoutesItemLongClicked(final int pos) {
+        clearFocus();
+        possition = pos;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (vr != null) {
+
+        if (vr == null) {
+            vr = new VoiceRecognizer();
+            vr.initListener(this, this);
             vr.startListener();
         }
     }
@@ -145,9 +158,13 @@ public class RoutesListActivity extends AppCompatActivity implements Recognition
     public void onPause() {
         super.onPause();
         if (vr.getListener() != null) {
+            vr.getListener().stopListening();
+            vr.getListener().cancel();
             vr.getListener().destroy();
-            Log.i(TAG, "Listener destroyed");
         }
+        vr = null;
+        Log.i(TAG, "Listener stoped");
+
     }
 
      /*

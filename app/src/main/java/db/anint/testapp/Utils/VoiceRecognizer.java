@@ -27,6 +27,7 @@ public class VoiceRecognizer {
     private Intent recognizerIntent;
 
     private boolean exit = false;
+    private boolean deletePoint = false;
     private static ArrayList<String> matches;
 
     private static boolean checkCommands(ArrayList<String> commands) {
@@ -98,7 +99,6 @@ public class VoiceRecognizer {
             Command used to navigate to specific point.
              */
                 if (checkCommands(COMMANDS_NAVIGATE)) {
-                    listView.performItemClick(listView, position, baseAdapter.getItemId(position));
                     return "navigate";
                 }
 
@@ -106,7 +106,7 @@ public class VoiceRecognizer {
             Command used to delete specific point from list.
              */
                 else if (checkCommands(COMMANDS_DELETE)) {
-                    listView.performItemClick(listView, position, baseAdapter.getItemId(position));
+                    deletePoint = true;
                     return "delete";
                 }
 
@@ -114,7 +114,6 @@ public class VoiceRecognizer {
             Command used to mark specific point as completed.
              */
                 else if (checkCommands(COMMANDS_COMPLETED)) {
-                    listView.performItemClick(listView, position, baseAdapter.getItemId(position));
                     return "completed";
                 }
 
@@ -122,8 +121,31 @@ public class VoiceRecognizer {
             Commands used to make photo of specific point
              */
                 else if (checkCommands(COMMANDS_PHOTO)) {
-                    listView.performItemClick(listView, position, baseAdapter.getItemId(position));
                     return "photo";
+                }
+
+                 /*
+                 Commands specific for delete point confirm bar.
+                 */
+
+                if (deletePoint) {
+
+                    /*
+                    Yes command - used only when trying to delete point.
+                    */
+
+                    if (checkCommands(COMMANDS_YES)) {
+                        return "yesDelete";
+                    }
+
+                     /*
+                     No command - used only when trying to exit application.
+                     */
+
+                    if (checkCommands(COMMANDS_NO)) {
+                        deletePoint = false;
+                        return "no";
+                    }
                 }
             }
         }

@@ -18,6 +18,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
 
@@ -120,19 +121,29 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
     }
 
     @ItemClick
-    void listDepartmentsItemClicked(Department department) {
+    void listDepartmentsItemClicked(final int pos) {
         clearFocus();
+        possition = pos;
         Intent i = new Intent(this, RoutesListActivity_.class);
         i.putExtra("username", username);
         i.putExtra("password", password);
-        i.putExtra("route", department.getSymbol());
+        i.putExtra("route", departmentsAdapter.getItem(pos).getSymbol());
         startActivity(i);
+    }
+
+    @ItemLongClick
+    void listDepartmentsItemLongClicked(final int pos) {
+        clearFocus();
+        possition = pos;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (vr != null) {
+
+        if (vr==null) {
+            vr = new VoiceRecognizer();
+            vr.initListener(this, this);
             vr.startListener();
         }
     }
@@ -141,9 +152,13 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
     public void onPause() {
         super.onPause();
         if (vr.getListener() != null) {
+            vr.getListener().stopListening();
+            vr.getListener().cancel();
             vr.getListener().destroy();
-            Log.i(TAG, "Listener destroyed");
         }
+        vr = null;
+        Log.i(TAG, "Listener stoped");
+
     }
 
     /*
@@ -198,11 +213,15 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
             switch (command) {
                 case "down":
                     clearFocus();
+                    listDepartments.clearChoices();
+                    departmentsAdapter.notifyDataSetChanged();
                     possition++;
                     setFocus();
                     break;
                 case "up":
                     clearFocus();
+                    listDepartments.clearChoices();
+                    departmentsAdapter.notifyDataSetChanged();
                     possition--;
                     setFocus();
                     break;

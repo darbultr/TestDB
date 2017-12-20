@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.support.constraint.ConstraintLayout;
@@ -15,17 +16,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.ItemLongClick;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import db.anint.testapp.Login.LoginActivity_;
 import db.anint.testapp.Models.Point;
@@ -37,8 +42,10 @@ import db.anint.testapp.Utils.VoiceRecognizer;
 @EActivity(R.layout.activity_points_list)
 public class PointsListActivity extends AppCompatActivity implements RecognitionListener {
     final String TAG = PointsListActivity.class.getSimpleName();
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     VoiceRecognizer vr = new VoiceRecognizer();
     Snackbar confirm;
+    Snackbar deleteConfirm;
     int possition = 0;
 
     @Extra("username")
@@ -97,7 +104,9 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
         progressDialog.dismiss();
         pointsAdapter.update(points);
         listPoints.setAdapter(pointsAdapter);
-        setFocus();
+        if(points.size()>0){
+            setFocus();
+        }
         vr.startListener();
     }
 
@@ -127,8 +136,17 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
         pointsAdapter.notifyDataSetChanged();
     }
 
+    @ItemClick
+    void listPointsItemClicked(final int pos){
+        clearFocus();
+        possition = pos;
+    }
+
     @ItemLongClick
     void listPointsItemLongClicked(final int pos) {
+        clearFocus();
+        possition =pos;
+        setFocus();
         String options[] = new String[]
                 {this.getResources().getString(R.string.navigate),
                         this.getResources().getString(R.string.delete),
@@ -140,32 +158,17 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i) {
-                    //TODO: CREATE FUNCTIONS
                     case 0:
-                        Intent navigate = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("http://maps.google.com/maps?daddr="
-                                        + pointsAdapter.getItem(pos).getLat() + ","
-                                        + pointsAdapter.getItem(pos).getLon()));
-                        navigate.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-                        startActivity(navigate);
+                        initNavigation(pos);
                         break;
                     case 1:
-                        final Snackbar confirm = Snackbar.make(pointsLayout, getResources().getString(R.string.confirmDelete), Snackbar.LENGTH_LONG)
-                                .setAction(getResources().getString(R.string.yes), new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        pointsAdapter.delete(pos);
-                                    }
-                                });
-                        confirm.show();
-
+                        deletePoint(pos);
                         break;
                     case 2:
-                        //TODO: Make photo and save name to json
-                        Toast.makeText(PointsListActivity.this, "Zdjęcie", Toast.LENGTH_SHORT).show();
+                        initCamera(pos);
                         break;
                     case 3:
-                        pointsAdapter.checkDone(pos);
+                        setPointDone(pos);
                         break;
                 }
             }
@@ -173,10 +176,48 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
         optionsDialog.show();
     }
 
+    public void initNavigation(int possition) {
+        Intent navigate = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?daddr="
+                        + pointsAdapter.getItem(possition).getLat() + ","
+                        + pointsAdapter.getItem(possition).getLon()));
+        navigate.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+        saveOperationData(possition, "navigation", false);
+        startActivity(navigate);
+    }
+
+    public void deletePoint(final int possition) {
+        deleteConfirm = Snackbar.make(pointsLayout, getResources().getString(R.string.confirmDelete), Snackbar.LENGTH_LONG)
+                .setAction(getResources().getString(R.string.yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saveOperationData(possition, "delete", false);
+                        pointsAdapter.delete(possition);
+                    }
+                });
+        deleteConfirm.show();
+    }
+
+    public void initCamera(int possition) {
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (camera.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(camera, REQUEST_IMAGE_CAPTURE);
+        }
+        saveOperationData(possition, "photo", true);
+    }
+
+    public void setPointDone(int possition) {
+        saveOperationData(possition, "completed", false);
+        pointsAdapter.checkDone(possition);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        if (vr != null) {
+
+        if (vr==null) {
+            vr = new VoiceRecognizer();
+            vr.initListener(this, this);
             vr.startListener();
         }
     }
@@ -185,13 +226,34 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
     public void onPause() {
         super.onPause();
         if (vr.getListener() != null) {
+            vr.getListener().stopListening();
+            vr.getListener().cancel();
             vr.getListener().destroy();
-            Log.i(TAG, "Listener destroyed");
         }
+        vr = null;
+        Log.i(TAG, "Listener stoped");
+
     }
 
-    //TODO: Method to save data from made operations to json, { point guid, operation, location(?where was made?), time, photo name
-    public void saveOperationData() {
+    public void saveOperationData(int possition, String action, Boolean isPhoto) {
+        Point point = pointsAdapter.getItem(possition);
+        JSONObject savedData = new JSONObject();
+        try {
+            savedData.put("guid", point.getKlasa());
+            savedData.put("czynnosc", action);
+            savedData.put("time", Calendar.getInstance().getTime());
+            savedData.put("address", point.getAdres());
+            if (isPhoto) {
+                savedData.put("photo",
+                        "PhotoPoint"
+                                + point.getLon()
+                                + "|" + point.getLat() + "|"
+                                + Calendar.getInstance().getTime());
+            }
+            //TODO: Save savedData on local storage.
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -262,13 +324,24 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
                     startActivity(intent);
                     break;
                 case "navigate":
-
+                    initNavigation(possition);
                     break;
                 case "delete":
+                    deletePoint(possition);
+                    break;
+                case "yesDelete":
+                    saveOperationData(possition, "delete", false);
+                    pointsAdapter.delete(possition);
+                    setFocus();
+                    break;
+                case "no":
+                    deleteConfirm.dismiss();
                     break;
                 case "completed":
+                    setPointDone(possition);
                     break;
                 case "photo":
+                    initCamera(possition);
                     break;
 
 
