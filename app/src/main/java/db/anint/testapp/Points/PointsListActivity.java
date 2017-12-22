@@ -1,12 +1,15 @@
 package db.anint.testapp.Points;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
@@ -29,6 +32,10 @@ import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -104,7 +111,7 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
         progressDialog.dismiss();
         pointsAdapter.update(points);
         listPoints.setAdapter(pointsAdapter);
-        if(points.size()>0){
+        if (points.size() > 0) {
             setFocus();
         }
         vr.startListener();
@@ -137,7 +144,7 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
     }
 
     @ItemClick
-    void listPointsItemClicked(final int pos){
+    void listPointsItemClicked(final int pos) {
         clearFocus();
         possition = pos;
     }
@@ -145,7 +152,7 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
     @ItemLongClick
     void listPointsItemLongClicked(final int pos) {
         clearFocus();
-        possition =pos;
+        possition = pos;
         setFocus();
         String options[] = new String[]
                 {this.getResources().getString(R.string.navigate),
@@ -200,7 +207,7 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
 
     public void initCamera(int possition) {
         Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (camera.resolveActivity(getPackageManager())!=null){
+        if (camera.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(camera, REQUEST_IMAGE_CAPTURE);
         }
         saveOperationData(possition, "photo", true);
@@ -215,7 +222,7 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
     public void onResume() {
         super.onResume();
 
-        if (vr==null) {
+        if (vr == null) {
             vr = new VoiceRecognizer();
             vr.initListener(this, this);
             vr.startListener();
@@ -235,11 +242,28 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
 
     }
 
+    protected boolean shouldAskPermissions() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    @TargetApi(23)
+    protected void askPermissions() {
+        String[] permissions = {
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        int requestCode = 200;
+        requestPermissions(permissions, requestCode);
+    }
+
     public void saveOperationData(int possition, String action, Boolean isPhoto) {
+        if (shouldAskPermissions()) {
+            askPermissions();
+        }
         Point point = pointsAdapter.getItem(possition);
         JSONObject savedData = new JSONObject();
         try {
-            savedData.put("guid", point.getKlasa());
+            savedData.put("uuid", point.getUuid());
             savedData.put("czynnosc", action);
             savedData.put("time", Calendar.getInstance().getTime());
             savedData.put("address", point.getAdres());
@@ -250,9 +274,21 @@ public class PointsListActivity extends AppCompatActivity implements Recognition
                                 + "|" + point.getLat() + "|"
                                 + Calendar.getInstance().getTime());
             }
-            //TODO: Save savedData on local storage.
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        try {
+            Writer output;
+            File file = new File(
+                    this.getExternalFilesDir(
+                            Environment.getDataDirectory().getAbsolutePath()
+                    ) + "/" + Calendar.getInstance().getTime() + " - " + action + ".json");
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(savedData.toString());
+            output.close();
+
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
         }
 
     }

@@ -3,6 +3,8 @@ package db.anint.testapp.Models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.UUID;
+
 /**
  * Point class to download into listview
  * {
@@ -35,6 +37,8 @@ public class Point {
 
     private boolean focus;
 
+    private UUID uuid;
+
     public Point() {
         super();
     }
@@ -47,7 +51,6 @@ public class Point {
         this.trasa = trasa;
         this.done = done;
     }
-
 
     public double getLat() {
         return lat;
@@ -79,5 +82,13 @@ public class Point {
 
     public void setFocus(boolean focus) {
         this.focus = focus;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }

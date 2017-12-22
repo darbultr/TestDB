@@ -1,14 +1,7 @@
 package db.anint.testapp.Models;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.List;
+
 
 /**
  * Department class to download into listview

@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import db.anint.testapp.R;
 
 
 /**

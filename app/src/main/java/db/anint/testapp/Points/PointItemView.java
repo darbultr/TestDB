@@ -1,7 +1,6 @@
 package db.anint.testapp.Points;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 

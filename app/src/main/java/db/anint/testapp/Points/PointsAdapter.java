@@ -17,7 +17,7 @@ import db.anint.testapp.Models.Point;
  */
 @EBean
 public class PointsAdapter extends BaseAdapter {
-    private ArrayList<Point> points = new ArrayList<>();
+    public ArrayList<Point> points = new ArrayList<>();
 
     @RootContext
     Context context;

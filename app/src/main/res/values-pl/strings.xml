@@ -11,7 +11,7 @@
     <string name="accessDenied">Odmowa dostępu</string>
     <string name="downloadingDepartmentsList">Pobieranie listy oddziałów...</string>
     <string name="downloadingRoutesList">Pobieranie listy tras...</string>
-    <string name="downloadingPointsList">Pobeiranie listy punktów...</string>
+    <string name="downloadingPointsList">Pobieranie listy punktów...</string>
     <string name="error">Błąd, proszę spróbować ponownie!</string>
     <string name="retry">PONÓW PRÓBĘ</string>
     <string name="navigate">Nawiguj do tego miejsca</string>

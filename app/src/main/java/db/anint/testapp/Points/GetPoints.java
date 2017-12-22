@@ -7,6 +7,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import db.anint.testapp.Models.Point;
 import db.anint.testapp.REST.RestClient;
@@ -29,6 +30,10 @@ public class GetPoints {
         try {
             restClient.setHttpBasicAuth("dariuszb", "398kl*ALc5ffn9v");
             ArrayList<Point> points = restClient.getPoints(guid);
+            for (Point point : points
+                    ) {
+                point.setUuid(UUID.randomUUID());
+            }
             publish(points);
         } catch (Exception ex) {
             publishError(ex);
@@ -36,10 +41,12 @@ public class GetPoints {
     }
 
     @UiThread
-    void publish(ArrayList<Point> points){
-        pointsListActivity.showPoints(points);}
+    void publish(ArrayList<Point> points) {
+        pointsListActivity.showPoints(points);
+    }
 
     @UiThread
-    void publishError(Exception ex){
-        pointsListActivity.showErrors(ex);}
+    void publishError(Exception ex) {
+        pointsListActivity.showErrors(ex);
+    }
 }
