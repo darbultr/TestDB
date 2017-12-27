@@ -1,8 +1,10 @@
 package db.anint.testapp.Departments;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
@@ -69,6 +71,18 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
 
     }
 
+    //TODO: Set within Utils
+    protected boolean shouldAskPermissions() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    @TargetApi(23)
+    protected void askPermissions() {
+        String permissions = "android.permission.RECORD_AUDIO";
+        int requestCode = 200;
+        requestPermissions(new String[]{permissions}, requestCode);
+    }
+
     public void initUtils() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getResources().getString(R.string.downloadingDepartmentsList));
@@ -91,6 +105,9 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
         departmentsAdapter.update(departments);
         listDepartments.setAdapter(departmentsAdapter);
         setFocus();
+        if (shouldAskPermissions()) {
+            askPermissions();
+        }
         vr.startListener();
     }
 
@@ -141,7 +158,7 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
     public void onResume() {
         super.onResume();
 
-        if (vr==null) {
+        if (vr == null) {
             vr = new VoiceRecognizer();
             vr.initListener(this, this);
             vr.startListener();
@@ -167,7 +184,7 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
-
+        Log.e(TAG, "ready for speech");
     }
 
     @Override
@@ -192,6 +209,40 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
 
     @Override
     public void onError(int i) {
+        String message;
+        switch (i) {
+            case SpeechRecognizer.ERROR_AUDIO:
+                message = "Audio recording error";
+                break;
+            case SpeechRecognizer.ERROR_CLIENT:
+                message = "Client side error";
+                break;
+            case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                message = "Insufficient permissions";
+                break;
+            case SpeechRecognizer.ERROR_NETWORK:
+                message = "Network error";
+                break;
+            case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                message = "Network timeout";
+                break;
+            case SpeechRecognizer.ERROR_NO_MATCH:
+                message = "No match";
+                break;
+            case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                message = "RecognitionService busy";
+                break;
+            case SpeechRecognizer.ERROR_SERVER:
+                message = "error from server";
+                break;
+            case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                message = "No speech input";
+                break;
+            default:
+                message = "Not recognised";
+                break;
+        }
+        Log.e(TAG, message);
         vr.startListener();
     }
 
@@ -241,5 +292,6 @@ public class DepartmentsListActivity extends AppCompatActivity implements Recogn
 
     @Override
     public void onEvent(int i, Bundle bundle) {
+        Log.e(TAG, "event" + i + bundle.toString());
     }
 }
